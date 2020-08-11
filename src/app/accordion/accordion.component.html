@@ -1,0 +1,120 @@
+<ng-container class="m-5 p-5">
+  <form (submitValid)="onSubmit()"
+        [formGroup]="accordionForm">
+    <div class="row">
+      <!-- General Info -->
+      <div class="col-6">
+        <h5>General info</h5>
+        <div formGroupName="general_info">
+          <div><label for="max_outlet">Outlet</label>
+            <input formControlName="max_outlet">
+          </div>
+          <div><label for="contact_email">Contact e-mail</label>
+            <input formControlName="contact_email">
+          </div>
+          <div><label for="contact_phone_number">Contact phone number</label><input
+                   formControlName="contact_phone_number">
+          </div>
+        </div>
+        <!--SPECIFY YOUR ISSUE-->
+        <h5> Specify your issue </h5>
+        <div class="w-100 d-flex flex-column">
+          <div formArrayName="specify_your_issue">
+            <!--  get specify_your_issue() -->
+            <div *ngFor="let issue of specify_your_issue.value; index as i">
+              <ng-container [formGroupName]="i">
+                <accordion>
+                  <accordion-group>
+                    <div class="d-flex justify-content-between p-1"
+                         accordion-heading
+                         type="button"> <button class="btn btn-link"
+                              *ngIf="issue.damage_event_of === 'Terminal'"
+                              type="button">{{issue.terminal_type}}</button>
+                      <button class="btn btn-link"
+                              *ngIf="issue.damage_event_of === 'Payment system'"
+                              type="button">{{issue.equipment}}</button>
+                      <i (click)="deleteIssue(issue.terminal_id)"
+                         class="fa fa-window-close"></i></div>
+                    <ul class="">
+                      <li class=""
+                          style="border: 0px !important;">
+                        <div class="">
+                          <div> Damage event of: </div>
+                          <label class=" mw-100"
+                                 *ngFor="let itemDmg of this.damage_events">
+                            <input type="radio"
+                                   class=""
+                                   value="{{itemDmg.value}}"
+                                   (change)="onDemageItemChange(itemDmg, issue)"
+                                   formControlName="damage_event_of" />{{itemDmg.key}} <span class="checkmark"></span>
+                          </label>
+                        </div>
+                      </li>
+                    </ul>
+                    <ul class=""
+                        *ngIf="issue.damage_event_of === 'Terminal' || issue.damage_event_of === 'Payment system'">
+                      <li class=""
+                          style="border: 0px !important;">
+                        <div class="">
+                          <div> Equipment was: </div>
+                          <label class="mw-100"
+                                 *ngFor="let itemEqu of this.equipments_was">
+                            <input type="radio"
+                                   class=""
+                                   value="{{itemEqu.value}}"
+                                   (change)="onEquipmentItemChange(itemEqu, issue)"
+                                   formControlName="equipment_was" />{{itemEqu.key}} <span class="checkmark"></span>
+                          </label>
+                        </div>
+                      </li>
+                    </ul>
+                    <div *ngIf="issue.damage_event_of === 'Terminal'">
+                      <div class=" m-2">
+                        <label for="terminal_type"
+                               class="mw-100">Terminal type</label>
+                        <input type="text"
+                               class=""
+                               formControlName="terminal_type"
+                               placeholder="" />
+                      </div>
+                      <div class=" m-2">
+                        <label for="terminal_id"
+                               class="mw-100">Terminal ID</label>
+                        <input type="text"
+                               class=""
+                               formControlName="terminal_id"
+                               placeholder="" />
+                      </div>
+                      <div class=" m-2">
+                        <label for="serial_number"
+                               class="mw-100"> Serial number </label>
+                        <input type="text"
+                               class=""
+                               formControlName="serial_number"
+                               placeholder="" />
+                      </div>
+                    </div>
+                    <div *ngIf="issue.damage_event_of === 'Payment system'">
+                      <div class="m-2">
+                        <label for="equipment"
+                               class="mw-100"> Equipment </label>
+                        <input type="text"
+                               class=""
+                               formControlName="equipment"
+                               placeholder="" />
+                      </div>
+                    </div>
+                  </accordion-group>
+                </accordion>
+              </ng-container>
+            </div>
+            <!-- </ng-container> -->
+            <button type="button"
+                    class="btn btn-primary w-100"
+                    (click)="addAnother()">Add another</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</ng-container>
