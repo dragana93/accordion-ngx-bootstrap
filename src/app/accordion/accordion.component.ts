@@ -25,8 +25,8 @@ export class AccordionComponent implements OnInit {
         value: "Terminal",
       },
       {
-        key: "payment_sistem",
-        value: "Payment sistem",
+        key: "payment_system",
+        value: "Payment system",
       },
     ];
 
@@ -104,7 +104,7 @@ export class AccordionComponent implements OnInit {
     if (item.key === "terminal") {
       issue.isTerminal = true;
       issue.isPaymentSystem = false;
-    } else if (item.key === "payment_sistem") {
+    } else if (item.key === "payment_system") {
       issue.isTerminal = false;
       issue.isPaymentSystem = true;
     }
@@ -148,23 +148,42 @@ export class AccordionComponent implements OnInit {
 
     let iss_id = Math.floor(Math.random() * 10) + 100;
 
-    let data = this.accordionForm.get("specify_your_issue") as FormArray;
-    // let data = this.maximaInsuranceClaimForm.getRawValue();
-    console.log("FormArray", data);
+    let data = (this.accordionForm.get("specify_your_issue") as FormArray)
+      .controls;
+    console.log(" DATA 1", data);
+    // debugger;
+    let data2 = JSON.parse(JSON.stringify(this.accordionForm.value));
+
+    console.log(" DATA 2", data2);
 
     (this.accordionForm.get("specify_your_issue") as FormArray).push(
       new FormGroup({
-        damage_event_of: this.fb.control("GAAAA"),
+        damage_event_of: this.fb.control("Terminal"),
         equipment_was: this.fb.control("Damaged"),
         terminal_type: this.fb.control("GA"),
-        terminal_id: this.fb.control("element.terminal_id"),
-        serial_number: this.fb.control("element.serial_number"),
+        terminal_id: this.fb.control("5245254"),
+        serial_number: this.fb.control("253452"),
         equipment: this.fb.control("element.equipment"),
       })
     );
+    // {
+    //   issue_id: 123,
+    //   damage_event_of: "Payment system",
+    //   isTerminal: false,
+    //   isPaymentSystem: true,
+    //   equipment_was: "Lost",
+    //   isDamaged: false,
+    //   isLost: true,
+    //   isStolen: false,
+    //   terminal_type: "IWL221GPRSCL_GPRS",
+    //   terminal_id: 2222222,
+    //   serial_number: 45026000106544,
+    //   equipment: "Stylus",
+    // },
   }
 
   deleteIssue(terminal_id) {
+    debugger;
     this.model[0].specify_your_issue = this.model.specify_your_issue.filter(
       (item) => terminal_id !== item.terminal_id
     );
